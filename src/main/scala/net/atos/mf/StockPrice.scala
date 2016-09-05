@@ -16,5 +16,5 @@ class StockPrice (val itemPrices: Map[String, Int]) {
     * @return Price of the item
     * @throws InvalidItemException Thrown if the item doesn't exist
     */
-  def getPriceForItem(item: String): Int = throw new NotImplementedError
+  def getPriceForItem(item: String): Int = itemPrices.getOrElse(item.toLowerCase, throw new InvalidItemException())
 }
