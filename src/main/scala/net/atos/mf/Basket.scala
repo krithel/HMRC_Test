@@ -13,14 +13,14 @@ class Basket (private val items: Map[String, Int]) {
     * @param item Item to get the count of
     * @return Number of instances of the item in basket
     */
-  def getItemCount(item: String): Int = throw new NotImplementedError
+  def getItemCount(item: String): Int = items.getOrElse(item.toLowerCase, 0)
 
   /**
     * Get the names of all items in the basket
     *
     * @return List of names of all items in the basket
     */
-  def getItemNames: List[String] = throw new NotImplementedError
+  def getItemNames: List[String] = items.keys.toList
 }
 
 /**
@@ -34,5 +34,5 @@ object Basket {
     * @param items List of shopping item products
     * @return New populated basket
     */
-  def createFromItems(items: List[String]): Basket = throw new NotImplementedError
+  def createFromItems(items: List[String]): Basket = new Basket(items.groupBy(_.toLowerCase).mapValues(_.size))
 }
