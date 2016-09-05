@@ -1,5 +1,7 @@
 package net.atos.mf
 
+import net.atos.mf.discount.Discount
+
 /**
   * The Checkout handles getting prices for Baskets of items
   *
@@ -22,4 +24,12 @@ class Checkout (val basket: Basket, val stockPrice: StockPrice) {
     * @return Total cost of all instances of a single type of item
     */
   private def getCostOfItem(item: String) = basket.getItemCount(item) * stockPrice.getPriceForItem(item)
+
+  /**
+    * Get the total price of all items in the basket, applying discounts
+    *
+    * @param discounts A list of discounts to be applied to the basket
+    * @return Total price, minus any discounts
+    */
+  def getDiscountCost(discounts: List[Discount]) = throw new NotImplementedError
 }

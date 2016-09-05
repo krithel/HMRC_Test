@@ -1,5 +1,6 @@
 package net.atos.mf
 
+import net.atos.mf.discount.{OrangeDiscount, AppleDiscount}
 import net.atos.mf.exception.InvalidItemException
 import org.scalatest.FreeSpec
 
@@ -126,4 +127,72 @@ class CheckoutTests extends FreeSpec {
     assert(checkout.getTotalCost == 280)
   }
 
+
+  /**
+    * Discount tests
+    */
+  val discounts = List(new AppleDiscount, new OrangeDiscount)
+
+  "A basket of no fruit should cost 0p after applying discounts" in {
+    val basket = Basket.createFromItems(List())
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 0)
+  }
+
+  "A basket containing 1 Apple should cost 60p after applying discounts" in {
+    val basket = Basket.createFromItems(List("apple"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 60)
+  }
+
+  "A basket of 2 Apples should cost 60p after applying discounts" in {
+    val basket = Basket.createFromItems(List.fill(2)("apple"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 60)
+  }
+
+  "A basket of 3 Apples should cost £1.20 after applying discounts" in {
+    val basket = Basket.createFromItems(List.fill(3)("apple"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 120)
+  }
+
+  "A basket containing 1 Orange should cost 25p after applying discounts" in {
+    val basket = Basket.createFromItems(List("orange"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 25)
+  }
+
+  "A basket of 3 Oranges should cost 50p after applying discounts" in {
+    val basket = Basket.createFromItems(List.fill(3)("orange"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 50)
+  }
+
+  "A basket of 5 Oranges should cost £1 after applying discounts" in {
+    val basket = Basket.createFromItems(List.fill(5)("orange"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 100)
+  }
+
+  "A basket of 10 Apples and 8 Oranges should cost £4.50" in {
+    val basket = Basket.createFromItems(Random.shuffle(List.fill(10)("apple")) ++ List.fill(8)("orange"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 450)
+  }
+
+  "A basket containing fruits should be treated case-insensitively when applying discounts" in {
+    val basket = Basket.createFromItems(List("apple", "Apple", "APplE", "ORANGE", "orange", "ORAnge", "Orange"))
+    val checkout = new Checkout(basket, stockPrice)
+
+    assert(checkout.getDiscountCost(discounts) == 195)
+  }
 }
