@@ -31,5 +31,6 @@ class Checkout (val basket: Basket, val stockPrice: StockPrice) {
     * @param discounts A list of discounts to be applied to the basket
     * @return Total price, minus any discounts
     */
-  def getDiscountCost(discounts: List[Discount]) = throw new NotImplementedError
+  def getDiscountCost(discounts: List[Discount]) = discounts.foldLeft(getTotalCost)((totalCost, discount) =>
+    totalCost - discount.getDiscountAmount(basket, stockPrice))
 }

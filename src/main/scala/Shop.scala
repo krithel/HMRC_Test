@@ -1,3 +1,4 @@
+import net.atos.mf.discount.{OrangeDiscount, AppleDiscount}
 import net.atos.mf.{StockPrice, Basket, Checkout}
 
 /**
@@ -12,6 +13,9 @@ object Shop {
     val checkout = new Checkout(basket, stockPrice)
 
     println(s"Total price of your basket is ${getDisplayablePrice(checkout.getTotalCost)}")
+
+    val discounts = List(new AppleDiscount, new OrangeDiscount)
+    println(s"Total price including discounts is ${getDisplayablePrice(checkout.getDiscountCost(discounts))}")
   }
 
   def getDisplayablePrice(price: Int) = if (price >= 100) {

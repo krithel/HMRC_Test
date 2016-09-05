@@ -7,6 +7,7 @@ import net.atos.mf.{StockPrice, Basket}
   */
 class AppleDiscount extends Discount {
 
-  override def getDiscountAmount(basket: Basket, stockPrice: StockPrice): Int = throw new NotImplementedError
+  override def getDiscountAmount(basket: Basket, stockPrice: StockPrice): Int
+    = (basket.getItemCount("apple") / 2) * stockPrice.getPriceForItem("apple")
 
 }
